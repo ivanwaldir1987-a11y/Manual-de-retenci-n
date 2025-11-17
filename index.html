@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Retención – Tigo Guatemala (Prepago / Pospago / Premium)</title>
+  <style>
+    :root{
+      --bg:#0f172a; --panel:#0b1220; --muted:#94a3b8; --text:#e5e7eb; --accent:#38bdf8; --ok:#22c55e; --warn:#f59e0b; --bad:#ef4444;
+      --radius:16px; --shadow:0 12px 30px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    body{margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial; background:radial-gradient(1000px 600px at 120% -20%, #1e293b, transparent), var(--bg); color:var(--text)}
+    .wrap{max-width:1100px; margin:30px auto 60px; padding:0 18px}
+    header{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap}
+    h1{margin:0; font-size:clamp(26px,3vw,40px)}
+    .subtitle{color:var(--muted)}
+    .badge{display:inline-block; border:1px solid #ffffff22; padding:4px 8px; border-radius:999px; font-size:12px; margin:4px 6px 0 0}
+    .card{background:linear-gradient(180deg,#0b1220,#0b1220ee); border:1px solid #ffffff18; border-radius:var(--radius); padding:18px; box-shadow:var(--shadow)}
+    .grid{display:grid; gap:16px; grid-template-columns:repeat(12,1fr)}
+    .col-4{grid-column:span 12} .col-8{grid-column:span 12}
+    @media(min-width:920px){ .col-4{grid-column:span 4} .col-8{grid-column:span 8} }
+    label{display:block; font-weight:600; margin-bottom:6px}
+    input, select{width:100%; background:#0f1626; color:var(--text); border:1px solid #334155; border-radius:12px; padding:10px 12px}
+    button{border:1px solid #ffffff22; background:linear-gradient(180deg,#1f2937aa,#0b1220cc); color:var(--text); padding:10px 14px; border-radius:12px; cursor:pointer}
+    button:hover{opacity:.95; transform:translateY(-1px)}
+    .muted{color:var(--muted)}
+    .beneficios{display:grid; gap:10px; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); margin-top:8px}
+    .beneficio{background:#0f1626; border:1px solid #243041; padding:12px; border-radius:12px}
+    .section-title{display:flex; align-items:center; gap:10px}
+    .section-title h2{margin:0; font-size:clamp(18px,2.2vw,24px)}
+    .cta-row{display:flex; gap:8px; flex-wrap:wrap}
+    .link{color:var(--accent); text-decoration:none}
+    .link:hover{text-decoration:underline}
+    footer{margin-top:24px; text-align:center; color:var(--muted); font-size:13px}
+    .credits{text-align:center; color:#94a3b8; font-size:14px; margin:10px 0 14px}
+    .accordion details{background:#0f1626; border:1px solid #223042; border-radius:12px; padding:12px 14px}
+    .accordion summary{font-weight:600; cursor:pointer}
+    .accordion details + details{margin-top:10px}
+    .hl{outline:2px dashed var(--accent); outline-offset:4px; border-radius:12px}
+    .pill{display:inline-block; padding:4px 8px; border-radius:999px; border:1px solid #ffffff1c; font-size:12px; margin:2px 4px 2px 0}
+    .clean{padding-left:18px}
+  </style>
+</head>
+<body>
+
+<!-- Sidebar simple -->
+<aside style="position:fixed; left:0; top:0; width:230px; height:100vh; background:#0b1220; border-right:1px solid #1e293b; padding:16px; overflow-y:auto; z-index:9999;">
+  <h3 style="margin-top:0; color:#e5e7eb;">Enlaces útiles</h3>
+
+  <input id="nombreEnlace" placeholder="Nombre" 
+         style="width:100%; margin-bottom:8px; padding:6px; border-radius:8px; background:#0f1626; color:#e5e7eb; border:1px solid #334155;" />
+
+  <input id="urlEnlace" placeholder="URL"
+         style="width:100%; margin-bottom:8px; padding:6px; border-radius:8px; background:#0f1626; color:#e5e7eb; border:1px solid #334155;" />
+
+  <button id="addLinkBtn"
+          style="width:100%; padding:8px; border-radius:8px; background:#1f2937aa; border:1px solid #ffffff22; color:#e5e7eb; cursor:pointer;">
+    Agregar enlace
+  </button>
+
+  <ul id="listaEnlaces" style="list-style:none; padding:0; margin-top:12px;"></ul>
+</aside>
+
+<!-- desplazamiento para que el contenido no quede oculto -->
+<div style="margin-left:250px;">
+
+  <div class="wrap">
+    <div class="credits">Creado por <strong>Ivan Waldir</strong> y colaboradores <strong>Fernanda</strong></div>
+    <header>
+      <div>
+        <h1>Retención – Tigo Guatemala</h1>
+        <div class="subtitle">Prepago • Pospago sin contrato • Pospago con contrato (equipo) • Premium (con móvil)</div>
+        <div>
+          <span class="badge">Uso interno</span>
+          <span class="badge">Cumplimiento: sin paquetes</span>
+          <span class="badge">Upgrade/Downgrade permitido</span>
+          <span class="badge">Anulación solo en agencias</span>
+        </div>
+      </div>
+      <div class="cta-row">
+        <button id="printBtn">Imprimir / PDF</button>
+        <button id="expandBtn">Expandir guiones</button>
+        <button id="collapseBtn">Colapsar guiones</button>
+      </div>
+    </header>
+
+    <div class="grid" style="margin-top:16px">
+      <!-- Selector -->
+      <section class="card col-4">
+        <div class="section-title"><h2>1) Seleccione categoría y plan</h2></div>
+        <label for="categoria">Categoría</label>
+        <select id="categoria">
+          <option value="">— Elegir —</option>
+          <option value="prepago">Líneas Prepago</option>
+          <option value="pospago_sin">Línea Pospago sin contrato</option>
+          <option value="pospago_con">Plan Pospago con contrato (equipo nuevo)</option>
+          <option value="premium">Paquetes Premium (con móvil)</option>
+        </select>
+
+        <label for="planSelect" style="margin-top:14px">Plan / catálogo</label>
+        <select id="planSelect">
+          <option value="">— Seleccione una categoría primero —</option>
+        </select>
+
+        <label for="intencion" style="margin-top:14px">Intención del cliente</label>
+        <select id="intencion">
+          <option value="indeciso">Indeciso</option>
+          <option value="bajar">Bajar de plan</option>
+          <option value="subir">Subir de plan</option>
+        </select>
+
+        <div style="margin-top:14px">
+          <label for="buscador">Buscar beneficio</label>
+          <input id="buscador" placeholder="Ej: más datos, roaming, precio" />
+        </div>
+
+        <p class="muted" style="margin-top:12px">
+          Nota de cumplimiento: no ofrecemos paquetes; se permite subir/bajar plan. Anulación solo en <strong>agencias</strong>.
+        </p>
+      </section>
+
+      <!-- Resultado -->
+      <section class="card col-8" id="resultado">
+        <div class="section-title">
+          <h2>2) Beneficios del plan seleccionado</h2>
+          <span class="pill">Vista rápida</span>
+        </div>
+        <div id="planHeader" class="muted">Seleccione categoría y plan para ver beneficios y guion sugerido.</div>
+        <div class="beneficios" id="beneficios"></div>
+        <div class="cta-row" style="margin-top:12px">
+          <a id="planLink" class="btn link" href="#" target="_blank" rel="noopener">Abrir plan en la web ↗</a>
+          <button id="resaltarBtn">Resaltar beneficios</button>
+        </div>
+
+        <div class="accordion" style="margin-top:14px">
+          <details id="guion">
+            <summary>Guion de enganche (según intención)</summary>
+            <div id="scriptBox" class="muted">Elija plan e intención para ver frases sugeridas.</div>
+            <div style="margin-top:8px"><button class="copy" id="copyScript">Copiar guion</button></div>
+          </details>
+
+          <details>
+            <summary>Derivación a agencias (texto oficial)</summary>
+            <div id="agenciasText">
+              Para solicitudes de anulación, con gusto podemos orientar el proceso. La anulación se gestiona exclusivamente en <strong>agencias</strong>.
+              Por favor acuda con su documento vigente y número de línea. Si desea, puedo indicarle la agencia más cercana.
+            </div>
+            <div style="margin-top:8px"><button class="copy" data-copy-agencias>Copiar texto</button></div>
+          </details>
+        </div>
+      </section>
+    </div>
+
+    <section class="card" style="margin-top:16px">
+      <div class="section-title"><h2>3) Matriz de objeciones → respuesta</h2></div>
+      <div class="grid">
+        <div class="col-4"><div class="pill bad">Precio</div>
+          <div class="muted">“Comprendo el presupuesto. Para mantenerle conectado sin sorpresas, este plan conserva [beneficio clave] con una cuota menor.
+          ¿Le parece si lo dejamos así por 30 días y lo revisamos?”</div></div>
+        <div class="col-4"><div class="pill warn">Cobertura/velocidad</div>
+          <div class="muted">“Gracias por detallarlo. Validemos cobertura donde más usa el servicio.
+          Si persiste, bajamos de plan mientras se normaliza; así evita pagar de más.”</div></div>
+        <div class="col-4"><div class="pill ok">Indecisión</div>
+          <div class="muted">“Yo le acompaño en la elección. Con [PLAN], gana [beneficio 1] sin cambiar su número ni trámites en agencia.”</div></div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN ADICIONAL: PLAN SIN CONTRATO -->
+    <section id="plan-sin-contrato" class="card" style="margin-top:16px">
+      <div class="section-title"><h2>Plan Sin Contrato – Retención y oportunidades</h2></div>
+      <p class="muted">Acciones, transacciones y frases específicas para la categoría <strong>Pospago sin contrato</strong>.</p>
+
+      <details open>
+        <summary><strong>Ventajas para ofrecer subida de plan</strong></summary>
+        <ul class="clean">
+          <li>Libertad sin penalizaciones ni permanencia (flexibilidad para el cliente).</li>
+          <li>Posibilidad de aumentar megas/minutos inmediatamente y sin trámites en agencia.</li>
+          <li>Conservar número y beneficios actuales al migrar a un plan superior.</li>
+          <li>Activación de Apps Premium y servicios sin necesidad de contrato.</li>
+          <li>Control de facturación y ajustes rápidos desde atención o portal.</li>
+        </ul>
+      </details>
+
+      <details>
+        <summary><strong>Transacciones que podemos realizar desde Contact Center</strong></summary>
+        <ul class="clean">
+          <li>Consultar y actualizar datos de contacto (correo, dirección, titular).</li>
+          <li>Verificar consumo, fecha de corte, y saldo disponible.</li>
+          <li>Revisar y activar beneficios o apps incluidas (según políticas).</li>
+          <li>Solicitar y gestionar el cambio/upgrade de plan (cuando aplique) sin necesidad de agencia.</li>
+          <li>Programar llamadas de seguimiento y confirmación del cambio con el cliente.</li>
+        </ul>
+        <p class="muted">⚠️ Nota: Las <strong>reducciones de plan (downgrade)</strong> deben gestionarse únicamente en <strong>agencias</strong>. Informar al cliente con claridad y ofrecer alternativas.</p>
+      </details>
+
+      <details>
+        <summary><strong>Frases sugeridas para retención</strong></summary>
+
+        <h4>Cuando el cliente desea <em>bajar de plan</em> (gestión en agencia)</h4>
+        <ul class="clean">
+          <li>"Comprendo su decisión y quiero ayudarle. Para proteger sus beneficios y evitar pérdidas, la reducción de plan se gestiona en agencias; con gusto le indico la agencia más cercana y le acompaño con la información necesaria."</li>
+          <li>"Entiendo que busca ahorrar; en agencia pueden tramitar la baja de forma segura. Mientras tanto, puedo revisarle alternativas que mantengan sus beneficios y reduzcan su cuota."</li>
+          <li>"Para garantizar que no pierda promociones ni datos acumulados, la gestión debe hacerse en agencia. Si le parece, le envío la dirección y horario de atención."</li>
+        </ul>
+
+        <h4>Cuando el cliente puede <em>subir de plan</em> (gestión desde Contact Center)</h4>
+        <ul class="clean">
+          <li>"Excelente opción: puedo gestionar el aumento de plan desde aquí y en minutos tendrá más datos y beneficios sin perder su número."</li>
+          <li>"Al subir de plan, accede a [beneficio clave] y mantenemos su facturación centralizada; ¿quiere que realice el cambio ahora mismo?"</li>
+          <li>"Puedo enviarle la confirmación del nuevo plan por mensaje y dejar programada una verificación para asegurar que todo quede correcto."</li>
+        </ul>
+
+        <h4>Frases para reforzar confianza y cierre</h4>
+        <ul class="clean">
+          <li>"Mi prioridad es que siga con un servicio que le entregue valor. Si le parece, dejamos el cambio activo y le confirmo al terminar."</li>
+          <li>"Agradezco su tiempo; quedo atento a cualquier ajuste. Puedo revertir o revisar opciones si no queda conforme."</li>
+          <li>"Le doy seguimiento personal: si no recibe la confirmación, yo le contacto primero."</li>
+        </ul>
+      </details>
+    </section>
+
+    <footer>
+      Playbook de retención | Uso interno | Cumplimiento activo.
+      <div class="credits">Creado por <strong>Ivan Waldir</strong> y colaboradores <strong>Adriana Antezana</strong> y <strong>Maria Lourdes</strong>.</div>
+    </footer>
+  </div>
+
+  <script>
+    // Fuente con tus URLs oficiales
+    const CATEGORIAS = {
+      prepago: {
+        nombre: 'Líneas Prepago',
+        planes: [
+          { key:'PREPAGO', nombre:'Catálogo Prepago', url:'https://www.tigo.com.gt/prepago', beneficios:[
+            'Recargas y paquetes de datos/voz prepago',
+            'Flexibilidad de consumo según recarga',
+            'Sin contrato ni permanencia'
+          ]}
+        ]
+      },
+      pospago_sin: {
+        nombre: 'Pospago sin contrato',
+        planes: [
+          { key:'POSTPAGO_SC', nombre:'Planes sin contrato', url:'https://www.tigo.com.gt/postpago/sin-contrato', beneficios:[
+            'Planes pospago sin permanencia',
+            'Control de cuota mensual',
+            'Ajuste de plan (upgrade/downgrade)'
+          ]}
+        ]
+      },
+      pospago_con: {
+        nombre: 'Pospago con contrato (equipo nuevo)',
+        planes: [
+          { key:'POSTPAGO_CC', nombre:'Planes con contrato (equipo)', url:'https://www.tigo.com.gt/postpago/con-contrato', beneficios:[
+            'Posibilidad de adquirir equipo nuevo',
+            'Cuotas con permanencia y beneficios extra',
+            'Opciones de financiamiento de dispositivo'
+          ]}
+        ]
+      },
+      premium: {
+        nombre: 'Paquetes Premium (con móvil)',
+        planos: [
+          { key:'PREMIUM_MOVIL', nombre:'Premium con móvil', url:'https://www.tigo.com.gt/premium#con-movil', beneficios:[
+            'Servicios premium agregados a tu línea',
+            'Integración con planes móviles compatibles',
+            'Gestión desde la web oficial'
+          ]}
+        ]
+      }
+    };
+
+    const SCRIPTS = {
+      indeciso: plan => `“Para ayudarle a decidir, con ${plan.nombre} obtiene ${plan.beneficios[0] || 'beneficios clave'} y mantiene su número.
+      Si no le funciona, lo ajustamos sin costo de gestión.”`,
+      bajar: plan => `“Entiendo que desea optimizar su pago. Con ${plan.nombre} conserva ${plan.beneficios[0] || 'lo esencial'} y reduce su cuota.
+      ¿Le parece si lo activamos desde hoy?”`,
+      subir: plan => `“Si busca más rendimiento, ${plan.nombre} suma ${plan.beneficios[0] || 'más datos'} y le habilita ${plan.beneficios[1] || 'ventajas adicionales'}.
+      ¿Le comparto el detalle y lo dejamos listo?”`
+    };
+
+    const $ = id => document.getElementById(id);
+    const catSel = $('categoria'), planSel = $('planSelect'), header = $('planHeader'), cont = $('beneficios'), link = $('planLink'), scriptBox = $('scriptBox'), busc = $('buscador');
+
+    function loadPlans(){
+      planSel.innerHTML = '<option value="">— Elegir —</option>';
+      const c = CATEGORIAS[catSel.value];
+      if(!c){ header.textContent = 'Seleccione categoría y plan para ver beneficios y guion sugerido.'; cont.innerHTML=''; link.href='#'; scriptBox.textContent='Elija plan e intención...'; return; }
+      c.planes.forEach(p => { const opt = document.createElement('option'); opt.value = p.key; opt.textContent = p.nombre; planSel.appendChild(opt); });
+      header.textContent = c.nombre + ': seleccione un plan.'; cont.innerHTML=''; link.href='#'; scriptBox.textContent='';
+    }
+
+    function render(){
+      const c = CATEGORIAS[catSel.value]; if(!c){ return; }
+      const plan = c.planes.find(p => p.key === planSel.value); cont.innerHTML='';
+      if(!plan){ header.textContent = c.nombre + ': seleccione un plan.'; link.href='#'; scriptBox.textContent=''; return; }
+      header.innerHTML = `<strong>${plan.nombre}</strong>`;
+      link.href = plan.url || '#';
+      const filtro = (busc.value || '').toLowerCase();
+      (plan.beneficios || []).filter(b => b.toLowerCase().includes(filtro)).forEach(b => {
+        const div = document.createElement('div'); div.className = 'beneficio'; div.textContent = b; cont.appendChild(div);
+      });
+      const tipo = $('intencion').value; scriptBox.textContent = (SCRIPTS[tipo] && SCRIPTS[tipo](plan)) || '';
+    }
+
+    catSel.addEventListener('change', loadPlans);
+    planSel.addEventListener('change', render);
+    $('intencion').addEventListener('change', render);
+    busc.addEventListener('input', render);
+
+    // Resaltar beneficios
+    $('resaltarBtn').addEventListener('click', ()=>{ cont.classList.add('hl'); setTimeout(()=>cont.classList.remove('hl'), 900); });
+
+    // Copiar guion
+    $('copyScript').addEventListener('click', async ()=>{
+      try{ await navigator.clipboard.writeText(scriptBox.textContent.trim()); alert('Guion copiado'); }catch(e){ alert('No se pudo copiar'); }
+    });
+
+    // Copiar texto agencias
+    document.querySelector('[data-copy-agencias]').addEventListener('click', async (e)=>{
+      const txt = $('agenciasText').innerText.trim();
+      try{ await navigator.clipboard.writeText(txt); e.target.textContent='Copiado'; setTimeout(()=>e.target.textContent='Copiar texto',1200)}catch(err){ e.target.textContent='Error'; setTimeout(()=>e.target.textContent='Copiar texto',1200)}
+    });
+
+    // Expand/Collapse
+    const allDetails = () => Array.from(document.querySelectorAll('details'));
+    $('expandBtn').addEventListener('click', ()=> allDetails().forEach(d=> d.open = true));
+    $('collapseBtn').addEventListener('click', ()=> allDetails().forEach(d=> d.open = false));
+
+    // Print
+    $('printBtn').addEventListener('click', ()=> window.print());
+  </script>
+
+</div> <!-- cierre del desplazamiento -->
+
+<script>
+  // Cargar links desde links.json (archivo en el repo)
+  async function cargarLinks() {
+    const lista = document.getElementById('listaEnlaces');
+    if(!lista) return;
+    lista.innerHTML = '';
+
+    try {
+      const res = await fetch('links.json');
+      if(!res.ok) throw new Error('no links.json');
+      const data = await res.json();
+
+      data.forEach(l => {
+        const li = document.createElement('li');
+        li.style.marginBottom = '6px';
+        li.innerHTML = `<a href="${l.url}" target="_blank" style="color:#38bdf8; text-decoration:none;">${l.nombre}</a>`;
+        lista.appendChild(li);
+      });
+    } catch (e) {
+      // ignore - no links.json or fetch blocked
+      console.log("No se cargó links.json:", e);
+    }
+  }
+
+  // Guardar localmente (NO intenta escribir links.json en el servidor)
+  document.addEventListener('DOMContentLoaded', function(){
+    const addBtn = document.getElementById('addLinkBtn');
+    if(addBtn){
+      addBtn.addEventListener('click', function(){
+        const n = document.getElementById('nombreEnlace').value.trim();
+        const u = document.getElementById('urlEnlace').value.trim();
+        if(!n || !u) return;
+
+        const dataLocal = JSON.parse(localStorage.getItem('misLinks') || '[]');
+        dataLocal.push({nombre:n, url:u});
+        localStorage.setItem('misLinks', JSON.stringify(dataLocal));
+
+        document.getElementById('nombreEnlace').value = '';
+        document.getElementById('urlEnlace').value = '';
+
+        mostrarLinksLocales();
+      });
+    }
+    cargarLinks();
+    mostrarLinksLocales();
+  });
+
+  function mostrarLinksLocales() {
+    const lista = document.getElementById('listaEnlaces');
+    if(!lista) return;
+    // First, show entries from links.json (if any) by re-calling cargarLinks,
+    // then append localStorage items so local adds appear alongside.
+    // We'll append local ones after the fetched ones.
+    const local = JSON.parse(localStorage.getItem('misLinks') || '[]');
+    local.forEach(l => {
+      const li = document.createElement('li');
+      li.style.marginBottom = '6px';
+      li.innerHTML = `<a href="${l.url}" target="_blank" style="color:#38bdf8; text-decoration:none;">${l.nombre}</a>`;
+      lista.appendChild(li);
+    });
+  }
+</script>
+</body>
+</html>
